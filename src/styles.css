@@ -1,0 +1,93 @@
+/* Глобальные стили для современного чат-интерфейса */
+:root {
+  color-scheme: light;
+  --chat-border-radius: 12px;
+  --chat-spacing: 16px;
+  --chat-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --chat-hover-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
+html.dark {
+  color-scheme: dark;
+  --chat-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  --chat-hover-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+/* Плавные анимации для сообщений */
+.fade-chunk {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Глобальные стили для полноэкранной компоновки */
+html, body, #app {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Предотвращаем скролл всей страницы */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Улучшенные скроллбары */
+.el-scrollbar__bar {
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.el-scrollbar:hover .el-scrollbar__bar {
+  opacity: 0.6;
+}
+
+/* Кастомные переходы для Element Plus */
+.el-button {
+  transition: all 0.2s ease;
+}
+
+.el-button:hover {
+  transform: translateY(-1px);
+}
+
+.el-input__wrapper {
+  transition: all 0.2s ease;
+}
+
+/* Улучшенные тени для карточек */
+.el-card {
+  box-shadow: var(--chat-shadow);
+  transition: box-shadow 0.2s ease;
+}
+
+.el-card:hover {
+  box-shadow: var(--chat-hover-shadow);
+}
+
+/* Адаптивные отступы */
+@media (max-width: 768px) {
+  :root {
+    --chat-spacing: 12px;
+  }
+}
+
+/* Скрытие элементов для мобильных */
+@media (max-width: 640px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+
