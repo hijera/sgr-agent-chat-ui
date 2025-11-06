@@ -119,11 +119,12 @@ function formatReasoningTool(args: ReasoningToolArgs): string {
     content += '\n';
   }
 
-  if (args.current_situation) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('current_situation' in args && args.current_situation !== undefined && args.current_situation !== null) {
     content += `**Current Situation:** ${args.current_situation}\n\n`;
   }
 
-  if (args.plan_status) {
+  if ('plan_status' in args && args.plan_status !== undefined && args.plan_status !== null) {
     content += `**Plan Status:** ${args.plan_status}\n\n`;
   }
 
@@ -140,7 +141,8 @@ function formatReasoningTool(args: ReasoningToolArgs): string {
 function formatWebSearchTool(args: WebSearchToolArgs): string {
   let content = '🔍 **Web Search**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
@@ -153,7 +155,8 @@ function formatWebSearchTool(args: WebSearchToolArgs): string {
 function formatExtractPageContentTool(args: ExtractPageContentToolArgs): string {
   let content = '📄 **Extract Page Content**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
@@ -170,11 +173,12 @@ function formatExtractPageContentTool(args: ExtractPageContentToolArgs): string 
 function formatGeneratePlanTool(args: GeneratePlanToolArgs): string {
   let content = '📋 **Generate Research Plan**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
-  if (args.research_goal) {
+  if ('research_goal' in args && args.research_goal !== undefined && args.research_goal !== null) {
     content += `**Research Goal:** ${args.research_goal}\n\n`;
   }
 
@@ -199,15 +203,16 @@ function formatGeneratePlanTool(args: GeneratePlanToolArgs): string {
 function formatAdaptPlanTool(args: AdaptPlanToolArgs): string {
   let content = '🔄 **Adapt Research Plan**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
-  if (args.original_goal) {
+  if ('original_goal' in args && args.original_goal !== undefined && args.original_goal !== null) {
     content += `**Original Goal:** ${args.original_goal}\n\n`;
   }
 
-  if (args.new_goal) {
+  if ('new_goal' in args && args.new_goal !== undefined && args.new_goal !== null) {
     content += `**New Goal:** ${args.new_goal}\n\n`;
   }
 
@@ -232,7 +237,8 @@ function formatAdaptPlanTool(args: AdaptPlanToolArgs): string {
 function formatClarificationTool(args: ClarificationToolArgs): string {
   let content = '❓ **Clarification Request**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
@@ -265,20 +271,21 @@ function formatClarificationTool(args: ClarificationToolArgs): string {
 function formatCreateReportTool(args: CreateReportToolArgs): string {
   let content = '📝 **Create Report**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
-  if (args.title) {
+  if ('title' in args && args.title !== undefined && args.title !== null) {
     content += `**Title:** ${args.title}\n\n`;
   }
 
-  if (args.confidence) {
+  if ('confidence' in args && args.confidence !== undefined && args.confidence !== null) {
     const confidenceEmoji = args.confidence === 'high' ? '🟢' : args.confidence === 'medium' ? '🟡' : '🔴';
     content += `**Confidence:** ${confidenceEmoji} ${args.confidence}\n\n`;
   }
 
-  if (args.content) {
+  if ('content' in args && args.content !== undefined && args.content !== null) {
     content += `**Report Content:**\n${args.content}\n`;
   }
 
@@ -288,7 +295,8 @@ function formatCreateReportTool(args: CreateReportToolArgs): string {
 function formatFinalAnswerTool(args: FinalAnswerToolArgs): string {
   let content = '✅ **Final Answer**\n\n';
 
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
@@ -300,11 +308,11 @@ function formatFinalAnswerTool(args: FinalAnswerToolArgs): string {
     content += '\n';
   }
 
-  if (args.answer) {
+  if ('answer' in args && args.answer !== undefined && args.answer !== null) {
     content += `**Answer:**\n${args.answer}\n\n`;
   }
 
-  if (args.status) {
+  if ('status' in args && args.status !== undefined && args.status !== null) {
     const statusEmoji = args.status === 'completed' ? '✅' : '❌';
     content += `**Status:** ${statusEmoji} ${args.status}\n`;
   }
@@ -316,7 +324,8 @@ function formatBaseTool(toolName: string, args: BaseToolArgs): string {
   let content = `🔧 **Tool: ${toolName}**\n\n`;
 
   // Try to format known fields nicely
-  if (args.reasoning) {
+  // Check for existence, not truthiness - empty strings should be displayed
+  if ('reasoning' in args && args.reasoning !== undefined && args.reasoning !== null) {
     content += `**Reasoning:** ${args.reasoning}\n\n`;
   }
 
@@ -384,9 +393,61 @@ function onSend(text: string) {
   const convo = [{ role: 'user' as const, content: text }];
   const model = selectedChat.value.agentId ?? DEFAULT_MODEL;
 
+  // Helper function to sanitize and format extracted page content
+  function sanitizeExtractedContent(content: string): string {
+    try {
+      console.log('[Sanitize] Processing content, length:', content.length);
+      
+      // Check if content starts with "Extracted Page Content:"
+      if (!content.includes('Extracted Page Content:')) {
+        console.log('[Sanitize] Not extracted content, returning as-is');
+        return content;
+      }
+
+      // Use regex to find and replace the full content section
+      // Pattern: **Full Content:**\n...content...\n\n*[Content length:
+      const fullContentPattern = /\*\*Full Content:\*\*\n([\s\S]*?)\n\n\*\[Content length:/g;
+      
+      let sanitized = content.replace(fullContentPattern, (match, extractedContent) => {
+        console.log('[Sanitize] Found full content section, length:', extractedContent.length);
+        
+        // Escape HTML tags to prevent rendering issues
+        let escaped = extractedContent
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        
+        // Limit length for better performance
+        const maxLength = 4000;
+        if (escaped.length > maxLength) {
+          escaped = escaped.substring(0, maxLength) + '\n\n...(content truncated for readability)';
+          console.log('[Sanitize] Content truncated to', maxLength, 'chars');
+        }
+        
+        // Wrap in code block for monospace display
+        return `**Full Content:**\n\n\`\`\`text\n${escaped}\n\`\`\`\n\n*[Content length:`;
+      });
+
+      console.log('[Sanitize] Sanitization complete');
+      return sanitized;
+    } catch (error) {
+      console.error('[Sanitize] Error sanitizing extracted content:', error);
+      // Fallback: just escape HTML
+      return content
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+  }
+
   // Helper function to detect if content is a tool result
   function detectToolResult(content: string): { isResult: boolean; type?: string; formatted?: string } {
     const trimmed = content.trim();
+
+    // Need at least 10 chars to detect patterns reliably
+    if (trimmed.length < 10) {
+      return { isResult: false };
+    }
 
     // Search Query results
     if (trimmed.startsWith('Search Query:')) {
@@ -397,12 +458,14 @@ function onSend(text: string) {
       };
     }
 
-    // Extracted Page Content results
+    // Extracted Page Content results - check with exact text from backend
     if (trimmed.startsWith('Extracted Page Content:')) {
+      // Sanitize the extracted content to prevent HTML/rendering issues
+      const sanitized = sanitizeExtractedContent(content);
       return {
         isResult: true,
         type: 'extract_result',
-        formatted: `📄 **Extracted Content**\n\n${content}`
+        formatted: `📄 **Extracted Content**\n\n${sanitized}`
       };
     }
 
@@ -482,21 +545,16 @@ function onSend(text: string) {
         if (agentId) setChatAgentId(chatId, agentId);
       },
       onNewMessage: (messageId: string) => {
-        // When we receive a new message ID from API, immediately create the assistant message
-        // This ensures the message exists in the chat and can be updated as content streams in
+        // When we receive a new message ID from API, prepare for new message
+        // DON'T create the message immediately - wait for actual content or tool calls
+        // This avoids creating empty messages when only tool calls are sent
         if (currentMessageId === messageId) return;
 
         currentMessageId = messageId;
 
-        // Create assistant message immediately with ID from API
-        // This message may later be converted to 'thinking' if <think> tags are found
-        currentAssistantMsg = addMessage({
-          chatId,
-          id: messageId,  // Use ID from API
-          role: 'assistant',
-          content: ''
-        });
-
+        // Reset state for new message
+        // currentAssistantMsg will be created lazily when we get content or need it
+        currentAssistantMsg = null;
         accumulatedContent = '';
         hasRegularContent = false;
         hasThinkingContent = false;
@@ -505,33 +563,62 @@ function onSend(text: string) {
         thinkAccumulator = '';
       },
       onDelta: (delta,id) => {
-        // Message should already be created by onNewMessage
-        // If not (edge case), skip this delta
-        if (!currentAssistantMsg) {
-          console.warn('onDelta called before onNewMessage - skipping delta');
-          return;
-        }
-
         accumulatedContent += delta;
 
-        // Check if accumulated content is a tool result
-        // Only check when we have enough content (at least 20 chars)
-        if (accumulatedContent.length >= 20) {
-          const toolResult = detectToolResult(accumulatedContent);
+        // Check if accumulated content is a tool result early
+        let toolResult = detectToolResult(accumulatedContent);
 
-          if (toolResult.isResult && currentAssistantMsg.content.length === 0) {
-            // This is a tool result and message is empty - convert it to system message for tool result
-            updateMessage(currentAssistantMsg.id, {
+        // If this is a tool result, we need to ensure we have a fresh message
+        if (toolResult.isResult) {
+          // Check if current message already has a different tool result type
+          // If so, we need to create a new message for this result
+          const currentMeta = currentAssistantMsg?.meta;
+          const isDifferentResult = currentMeta?.toolResult && 
+                                   currentMeta.toolResultType !== toolResult.type;
+          
+          if (currentAssistantMsg && (currentAssistantMsg.content.length > 0 || isDifferentResult)) {
+            console.log('[Tool Result] Creating new message - different result type or has content');
+            console.log(`  Previous type: ${currentMeta?.toolResultType}, New type: ${toolResult.type}`);
+            
+            // Reset for new message
+            currentAssistantMsg = null;
+            accumulatedContent = delta; // Reset to current delta
+            hasRegularContent = false;
+            // Re-detect tool result with fresh content
+            toolResult = detectToolResult(accumulatedContent);
+          }
+          
+          // Create message lazily if needed
+          if (!currentAssistantMsg && delta.trim() && toolResult.isResult) {
+            currentAssistantMsg = addMessage({
+              chatId,
+              id: `${currentMessageId}-result-${Date.now()}`,
               role: 'system',
+              content: '',
               meta: {
                 toolResult: true,
                 toolResultType: toolResult.type,
                 associatedTool: lastToolCall?.name
               }
             });
-            // Don't add icon prefix here, let the content flow naturally
-            // We'll format it in onDone if needed
+            console.log(`[Tool Result Detected] Type: ${toolResult.type}, Associated: ${lastToolCall?.name}`);
           }
+        } else {
+          // Regular content (not a tool result)
+          // Create assistant message lazily if we have content to display
+          if (!currentAssistantMsg && delta.trim()) {
+            currentAssistantMsg = addMessage({
+              chatId,
+              id: currentMessageId || `msg-${Date.now()}`,
+              role: 'assistant',
+              content: ''
+            });
+          }
+        }
+
+        // Skip if still no message (empty delta before creation)
+        if (!currentAssistantMsg) {
+          return;
         }
 
         let s = delta;
@@ -540,19 +627,21 @@ function onSend(text: string) {
             const openIdx = s.indexOf('<think>');
             if (openIdx === -1) {
               // Regular content - add to current message
-              appendMessageContent(currentAssistantMsg!.id, s);
-              hasRegularContent = true;
+              if (currentAssistantMsg) {
+                appendMessageContent(currentAssistantMsg.id, s);
+                hasRegularContent = true;
+              }
               s = '';
             } else {
               const before = s.slice(0, openIdx);
-              if (before) {
-                appendMessageContent(currentAssistantMsg!.id, before);
+              if (before && currentAssistantMsg) {
+                appendMessageContent(currentAssistantMsg.id, before);
                 hasRegularContent = true;
               }
               inThink = true;
               // Convert current message to 'thinking' role if it doesn't have regular content yet
-              if (!hasRegularContent && !hasThinkingContent) {
-                updateMessage(currentAssistantMsg!.id, { role: 'thinking' });
+              if (!hasRegularContent && !hasThinkingContent && currentAssistantMsg) {
+                updateMessage(currentAssistantMsg.id, { role: 'thinking' });
               }
               hasThinkingContent = true;
               s = s.slice(openIdx + '<think>'.length);
@@ -563,10 +652,12 @@ function onSend(text: string) {
               thinkAccumulator += s;
               // Normalize thinking text: remove extra line breaks, keep paragraph breaks
               const normalized = normalizeThinkingText(thinkAccumulator);
-              const currentContent = currentAssistantMsg!.content;
-              if (normalized.length > currentContent.length) {
-                const addition = normalized.slice(currentContent.length);
-                if (addition.trim().length) appendMessageContent(currentAssistantMsg!.id, addition);
+              if (currentAssistantMsg) {
+                const currentContent = currentAssistantMsg.content;
+                if (normalized.length > currentContent.length) {
+                  const addition = normalized.slice(currentContent.length);
+                  if (addition.trim().length) appendMessageContent(currentAssistantMsg.id, addition);
+                }
               }
               s = '';
             } else {
@@ -574,10 +665,12 @@ function onSend(text: string) {
               if (inside) {
                 thinkAccumulator += inside;
                 const normalized = normalizeThinkingText(thinkAccumulator);
-                const currentContent = currentAssistantMsg!.content;
-                if (normalized.length > currentContent.length) {
-                  const addition = normalized.slice(currentContent.length);
-                  if (addition.trim().length) appendMessageContent(currentAssistantMsg!.id, addition);
+                if (currentAssistantMsg) {
+                  const currentContent = currentAssistantMsg.content;
+                  if (normalized.length > currentContent.length) {
+                    const addition = normalized.slice(currentContent.length);
+                    if (addition.trim().length) appendMessageContent(currentAssistantMsg.id, addition);
+                  }
                 }
               }
               inThink = false;
@@ -726,8 +819,14 @@ function onSend(text: string) {
               if (toolResult.type === 'search_result') icon = '🔍';
               else if (toolResult.type === 'extract_result') icon = '📄';
 
+              // For extract results, sanitize content to prevent HTML issues
+              let finalContent = msg.content;
+              if (toolResult.type === 'extract_result') {
+                finalContent = sanitizeExtractedContent(msg.content);
+              }
+
               // Format the content
-              msg.content = `${icon} **Tool Result**\n\n${msg.content}`;
+              msg.content = `${icon} **Tool Result**\n\n${finalContent}`;
               msg.role = 'system';
               msg.meta = {
                 ...msg.meta,

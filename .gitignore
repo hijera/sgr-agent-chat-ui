@@ -79,6 +79,13 @@ web_modules/
 .env.production.local
 .env.local
 
+
+sgr-deep-research-api/
+sgr-deep-research/
+
+# Example files and logs
+*-sgr-example.txt
+python-info-sgr-example.txt
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
