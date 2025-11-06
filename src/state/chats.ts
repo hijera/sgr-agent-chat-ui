@@ -1,7 +1,7 @@
 // Minimal in-memory chat state. Will be replaced/extended with IndexedDB later.
 import { reactive, computed } from 'vue';
 import type { Chat, ChatMessage } from '../types/chat';
-import { getAllChats, getAllMessages, putChat, deleteChatDb, deleteMessagesByChat, putMessage } from '../db/indexedDb';
+import { getAllChats, getAllMessages, putChat, deleteChatDb, deleteMessagesByChat, putMessage, deleteMessage as deleteMessageDb } from '../db/indexedDb';
 import { toRaw } from 'vue';
 function uid(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -73,12 +73,21 @@ export const useChats = () => {
     }
   }
 
+  function updateMessage(id: string, updates: Partial<Pick<ChatMessage, 'role' | 'content' | 'meta'>>) {
+    const m = state.messages.find(x => x.id === id);
+    if (m) {
+      if (updates.role !== undefined) m.role = updates.role;
+      if (updates.content !== undefined) m.content = updates.content;
+      if (updates.meta !== undefined) m.meta = updates.meta;
+      void putMessage(toRaw(m));
+    }
+  }
+
   function deleteMessage(id: string) {
     const idx = state.messages.findIndex(m => m.id === id);
     if (idx !== -1) {
       state.messages.splice(idx, 1);
       // Also remove from IndexedDB
-      const { deleteMessage: deleteMessageDb } = require('../db/indexedDb');
       void deleteMessageDb(id);
     }
   }
@@ -125,6 +134,7 @@ export const useChats = () => {
     selectChat,
     addMessage,
     appendMessageContent,
+    updateMessage,
     deleteMessage,
     setChatAgentId,
     reloadFromDb,

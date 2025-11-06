@@ -30,11 +30,6 @@
           <div v-if="role === 'thinking'" class="thinking-text">{{ content }}</div>
           <div v-else class="content-text" v-html="formattedContent"></div>
         </div>
-
-        <div v-if="role === 'assistant'" class="message-actions">
-          <el-button text size="small" :icon="CopyDocument" />
-          <el-button text size="small" :icon="RefreshRight" />
-        </div>
       </div>
 
       <div v-if="role === 'user'" class="message-avatar user-avatar">

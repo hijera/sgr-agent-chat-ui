@@ -8,11 +8,6 @@
           Ready to assist
         </div>
       </div>
-      <div class="header-actions">
-        <el-tooltip content="Clear conversation" placement="bottom">
-          <el-button text :icon="Delete" size="small" />
-        </el-tooltip>
-      </div>
     </header>
 
     <el-scrollbar class="messages" ref="scrollRef">
@@ -32,6 +27,16 @@
           />
           </template>
         </transition-group>
+
+        <!-- Streaming indicator -->
+        <transition name="fade">
+          <div v-if="isStreaming" class="streaming-indicator">
+            <el-icon class="spinning-icon" :size="20">
+              <Loading />
+            </el-icon>
+            <span class="streaming-text">Loading...</span>
+          </div>
+        </transition>
       </div>
     </el-scrollbar>
 
@@ -66,14 +71,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from 'vue';
+import { ref, watch, nextTick, computed, defineEmits, defineProps } from 'vue';
 import type {Chat, ChatMessage, ChatRole} from '../types/chat';
 import ChatMessageItem from './ChatMessageItem.vue';
 import { ElInput, ElButton, ElScrollbar, ElIcon, ElTooltip } from 'element-plus';
-import { Delete, Right, CircleCheckFilled, ChatSquare } from '@element-plus/icons-vue';
-import {HIDE_SYSTEM, HIDE_THIKNING} from "../config";
+import { Delete, Right, CircleCheckFilled, ChatSquare, Loading } from '@element-plus/icons-vue';
+import {SHOW_SYSTEM, SHOW_THIKNING} from "../config";
 
-const props = defineProps<{ chat: Chat | undefined; messages: ChatMessage[] }>();
+const props = defineProps<{
+  chat: Chat | undefined;
+  messages: ChatMessage[];
+  isStreaming: boolean;
+}>();
 const emit = defineEmits<{ (e: 'send', text: string): void }>();
 
 const draft = ref('');
@@ -99,10 +108,9 @@ function handleKeydown(e: Event | KeyboardEvent) {
 }
 
 function checkRoleVisibility(role: ChatRole) : boolean {
-  console.log((role=='thinking' && HIDE_THIKNING));
-  if (!role) return true;
-  if (role=='thinking' && HIDE_THIKNING) return false;
-  if (role=='system' && HIDE_SYSTEM) return false;
+
+  if (role=='system' && !SHOW_SYSTEM) return false;
+  if (role=='thinking' && !SHOW_THIKNING) return false;
     return true;
 }
 
@@ -270,6 +278,50 @@ watch(
 
 .message-list-move {
   transition: transform 0.3s ease;
+}
+
+/* Streaming indicator styles */
+.streaming-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  margin-top: 12px;
+  background: var(--el-bg-color);
+  border-radius: 12px;
+  border: 1px solid var(--el-border-color-light);
+  max-width: fit-content;
+}
+
+.spinning-icon {
+  animation: spin 1s linear infinite;
+  color: var(--el-color-primary);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.streaming-text {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  font-weight: 500;
+}
+
+/* Fade transition for streaming indicator */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
 
