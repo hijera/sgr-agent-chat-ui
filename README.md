@@ -16,7 +16,7 @@ Unofficial minimal chat UI built with Vue 3 + Vite and Element Plus, designed as
 ## Requirements
 
 - Node.js 18+
-- Running API (default `http://localhost:8010`)
+- Running SGR Deep Research API (default `http://localhost:8010`)
 
 ## Quick Start
 
