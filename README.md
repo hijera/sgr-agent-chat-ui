@@ -1,6 +1,7 @@
 # SGR Deep Research Frontend
 
 Unofficial minimal chat UI built with Vue 3 + Vite and Element Plus, designed as an OpenAI-compatible streaming client for [SGR Deep Research](https://github.com/vamplabAI/sgr-deep-research).
+![Preview](data/preview.png)
 
 ## Features
 
