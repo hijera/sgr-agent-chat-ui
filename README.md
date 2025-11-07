@@ -1,6 +1,6 @@
 # SGR Agent Chat UI
 
-Unofficial minimal chat UI built with Vue 3 + Vite and Element Plus, designed as an OpenAI-compatible streaming client for [SGR Deep Research](https://github.com/vamplabAI/sgr-deep-research).
+Unofficial minimal chat UI built with Vue 3 + Vite and Element Plus, designed as an OpenAI-compatible streaming client for [SGR Agent Core](https://github.com/vamplabAI/sgr-agent-core).
 ![Preview](data/preview.png)
 
 ## Features
@@ -16,7 +16,7 @@ Unofficial minimal chat UI built with Vue 3 + Vite and Element Plus, designed as
 ## Requirements
 
 - Node.js 18+
-- Running SGR Deep Research API (default `http://localhost:8010`)
+- Running SGR Agent Core API (default `http://localhost:8010`)
 
 ## Quick Start
 
@@ -31,7 +31,7 @@ Then open the printed local URL (default http://localhost:5173). During developm
 ## Configuration
 
 - Environment variables (Vite):
-  - `VITE_API_BASE` – base URL of SGR Deep Research API. Leave empty to use the dev proxy (recommended for local dev). Set to a full URL for direct calls in production.
+  - `VITE_API_BASE` – base URL of SGR Agent Core API. Leave empty to use the dev proxy (recommended for local dev). Set to a full URL for direct calls in production.
 
 The client calls `POST {VITE_API_BASE}/v1/chat/completions` with an OpenAI-compatible body and expects streaming response lines in the form `data: {...}` and a final `data: [DONE]`.
 
